@@ -11,7 +11,13 @@ export default class AccountService {
     reset = () => this.accountRepository.reset()
     
     getBalanceById(accountId: number): number {
-        throw new NonExistingAccountException(`Account ${accountId} does not exist!`)
+        const account = this.accountRepository.getById(accountId)
+
+        if(account === undefined) {
+            throw new NonExistingAccountException(`Account ${ accountId } does not exist`)
+        }
+        
+        return account!.balance    
     }
 
     createTransaction(accountId: number, amount: number): Account {
