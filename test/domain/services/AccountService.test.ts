@@ -10,11 +10,11 @@ describe('Account Service Tests', () => {
 
     test('Reset state before starting tests', () => {
         expect(accountService.reset()).toEqual([])  
-    });
+    })
 
     test('Get balance for non-existing account', () => {
         expect(() => accountService.getBalanceById(1234)).toThrowError(NonExistingAccountException)
-    });
+    })
 
     test('Create account with initial balance', () => {
 
@@ -26,6 +26,6 @@ describe('Account Service Tests', () => {
         const actualResult = accountService.createTransaction(100, 10)
 
         expect(actualResult).toStrictEqual(expectedResult)
-    });
+    })
 
-});
+})

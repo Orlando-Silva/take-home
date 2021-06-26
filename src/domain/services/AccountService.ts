@@ -14,13 +14,14 @@ export default class AccountService {
         throw new NonExistingAccountException(`Account ${accountId} does not exist!`)
     }
 
-    createTransaction(destination: number, amount: number): Account {
-        return {
-            id: destination,
-            balance: amount
-        }
+    createTransaction(accountId: number, amount: number): Account {
+        let account = this.accountRepository.getById(accountId) 
+            ?? this.accountRepository.create(accountId)      
+                    
+        account.balance += +amount
+        this.accountRepository.update(account)
+        
+        return account
     }
-
-    
 
 }

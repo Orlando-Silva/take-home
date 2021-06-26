@@ -15,6 +15,6 @@ describe('Event Controller Tests', () => {
           .get('/balance')
           .query({ account_id: '1234' })
           .expect(404, '0');
-    });  
+    })
 
 })
