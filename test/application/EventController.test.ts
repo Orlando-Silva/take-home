@@ -72,6 +72,10 @@ describe('Get Balance Tests', () => {
       .expect(200, '20');
   });
 
+})
+
+describe('Withdraw Tests', () => {
+
   test('Withdraw from non-existing account', () => {
     return request(app)
       .post('/event')
