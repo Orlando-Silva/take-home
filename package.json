@@ -1,0 +1,20 @@
+{
+  "name": "take-home",
+  "version": "1.0.0",
+  "description": "Take home assign - bank transactions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Orlando-Silva/take-home.git"
+  },
+  "keywords": [],
+  "author": "Orlando de Almeida Silva Neto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Orlando-Silva/take-home/issues"
+  },
+  "homepage": "https://github.com/Orlando-Silva/take-home#readme"
+}
