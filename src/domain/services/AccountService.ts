@@ -1,5 +1,5 @@
-import { injectable } from 'tsyringe';
-import AccountRepository from '../../infrastructure/repositories/AccountRepository';
+import { injectable } from 'tsyringe'
+import AccountRepository from '../../infrastructure/repositories/AccountRepository'
 
 @injectable()
 export default class AccountService {

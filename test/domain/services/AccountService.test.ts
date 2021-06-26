@@ -1,6 +1,6 @@
-import 'reflect-metadata';
-import { container } from 'tsyringe';
-import AccountService from '../../../src/domain/services/AccountService';
+import 'reflect-metadata'
+import { container } from 'tsyringe'
+import AccountService from '../../../src/domain/services/AccountService'
 
 describe('Account Service Tests', () => {
 
