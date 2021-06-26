@@ -35,6 +35,10 @@ describe('Deposits Tests', () => {
 describe('Withdraw Tests', () => {
 
     test('Withdraw from non-existing account', () => {
+        expect(() => accountService.createTransaction(100, 5, TransactionType.Withdraw)).toThrowError(NonExistingAccountException)
+    })
+
+    test('Withdraw from existing account', () => {
 
         const expectedAccount = createMockAccount(100, 15)
 
