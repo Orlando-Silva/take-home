@@ -1,5 +1,5 @@
-import { singleton } from "tsyringe";
-import Account from "../../domain/models/Account";
+import { singleton } from 'tsyringe';
+import Account from '../../domain/models/Account';
 
 @singleton()
 export default class AccountRepository {
