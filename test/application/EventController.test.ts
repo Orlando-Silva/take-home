@@ -52,6 +52,26 @@ describe('Get Balance Tests', () => {
         .expect(404, '0');
   })
 
+  test('Get balance for existing account', () => {
+    request(app)
+      .post('/event')
+      .send({
+        type: 'deposit', 
+        origin: '100', 
+        amount: 20
+      })
+      .expect(201, {
+        origin: {
+          id: '100', 
+          balance: 20
+        }
+    });
+    return request(app)
+      .get('/balance')
+      .query({ account_id: '100' })
+      .expect(200, '20');
+  });
+
 })
 
 
