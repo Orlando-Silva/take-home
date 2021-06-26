@@ -16,8 +16,8 @@ describe('Deposit Event Tests', () => {
             id: '100', 
             balance: 10
           }
-        });
-    });
+        })
+    })
 
     test('Deposit into existing account', () => {
       request(app)
@@ -39,8 +39,8 @@ describe('Deposit Event Tests', () => {
             id: '100', 
             balance: 20
           }
-        });
-    });
+        })
+    })
 })
 
 describe('Get Balance Tests', () => {
@@ -49,7 +49,7 @@ describe('Get Balance Tests', () => {
       return request(app)
         .get('/balance')
         .query({ account_id: '1234' })
-        .expect(404, '0');
+        .expect(404, '0')
   })
 
   test('Get balance for existing account', () => {
@@ -65,12 +65,12 @@ describe('Get Balance Tests', () => {
           id: '100', 
           balance: 20
         }
-    });
+    })
     return request(app)
       .get('/balance')
       .query({ account_id: '100' })
-      .expect(200, '20');
-  });
+      .expect(200, '20')
+  })
 
 })
 
@@ -84,8 +84,8 @@ describe('Withdraw Tests', () => {
         origin: '200', 
         amount: 10
       })
-      .expect(404, '0');
-  });
+      .expect(404, '0')
+  })
 
   test('Withdraw from existing account', () => {
     request(app)
@@ -100,7 +100,7 @@ describe('Withdraw Tests', () => {
           id: '100', 
           balance: 20
         }
-    });
+    })
     return request(app)
       .post('/event')
       .send({
@@ -113,18 +113,67 @@ describe('Withdraw Tests', () => {
           id: '100', 
           balance: 15
         }
-    });
-  });
+    })
+  })
 
 })
 
+describe('Transfer Tests', () => {
+
+  test('Transfer from non-existing account', () => {
+    return request(app)
+      .post('/event')
+      .send({
+        type: 'transfer', 
+        origin: '200',
+        destination: '300',
+        amount: 15
+      })
+      .expect(404, '0')
+  })
+
+  test('Transfer from existing account', () => {
+    request(app)
+      .post('/event')
+      .send({
+        type: 'deposit', 
+        destination: '100', 
+        amount: 15
+      })
+      .expect(201, {
+        destination: {
+          id: '100', 
+          balance: 15
+        }
+    })
+    return request(app)
+      .post('/event')
+      .send({
+        type: 'transfer', 
+        origin: '100',
+        destination: '300',
+        amount: 15
+      })
+      .expect(201, {
+        origin: {
+          id: '100', 
+          balance: 0
+        },
+        destination: {
+          id: '300', 
+          balance: 15
+        }
+    })
+  })
+
+})
 
 describe('Reset Tests', () => {
 
   test('Reset state before starting tests', () => {
     return request(app)
       .post('/reset')
-      .expect(200, 'OK');
+      .expect(200, 'OK')
   })
 
 })

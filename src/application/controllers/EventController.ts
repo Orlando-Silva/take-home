@@ -58,24 +58,7 @@ export default class EventController {
             req.body.type
         )
 
-        return this.createResponse(req.body.type, account)
-    }
-
-    private createMultipleTransactionFromEvent(req: Request) {
-        const withdrawAccount = this.accountService.createTransaction(req.body.origin, req.body.amount, TransactionType.Withdraw)
-        const depositAccount = this.accountService.createTransaction(req.body.destination, req.body.amount, TransactionType.Deposit)
-
-        const withdrawResponse = this.createResponse(req.body.type, withdrawAccount) 
-        const depositResponse = this.createResponse(req.body.type, depositAccount) 
-        
-        return {
-            withdrawResponse,
-            depositResponse
-        }
-    }
-
-    private createResponse(type: TransactionType, account: Account) {
-        return type == TransactionType.Deposit 
+        return req.body.type == TransactionType.Deposit 
             ? { 
                 destination: {
                     id: account.id,
@@ -88,5 +71,21 @@ export default class EventController {
                 }  
             } 
     }
-  
+
+    private createMultipleTransactionFromEvent(req: Request) {
+        const withdrawAccount = this.accountService.createTransaction(req.body.origin, req.body.amount, TransactionType.Withdraw)
+        const depositAccount = this.accountService.createTransaction(req.body.destination, req.body.amount, TransactionType.Deposit) 
+        
+        return {
+            destination: {
+                id: depositAccount.id,
+                balance: depositAccount.balance
+            },
+            origin: {
+                id: withdrawAccount.id,
+                balance: withdrawAccount.balance
+            } 
+        }
+    }
+
 }
