@@ -31,13 +31,24 @@ export default class EventController {
     event(req: Request, res: Response) {
         try {
 
+            const response = req.body.type == TransactionType.Transfer
+                ? this.createMultipleTransactionFromEvent(req)
+                : this.createTransactionFromEvent(req) 
+
             return res.status(201).send(
-                this.createTransactionFromEvent(req)    
+                response
             )
 
         } catch(e) {
             res.status(404).json(0)
         }
+    }
+
+    routes() {
+        this.router.post('/reset', (_req, res) => res.send(this.reset(res)))
+        this.router.get('/balance', (_req, res) => res.send(this.getBalanceById(_req, res)))
+        this.router.post('/event', (_req, res) => res.send(this.event(_req, res)))
+        return this.router
     }
 
     private createTransactionFromEvent(req: Request) {
@@ -48,6 +59,19 @@ export default class EventController {
         )
 
         return this.createResponse(req.body.type, account)
+    }
+
+    private createMultipleTransactionFromEvent(req: Request) {
+        const withdrawAccount = this.accountService.createTransaction(req.body.origin, req.body.amount, TransactionType.Withdraw)
+        const depositAccount = this.accountService.createTransaction(req.body.destination, req.body.amount, TransactionType.Deposit)
+
+        const withdrawResponse = this.createResponse(req.body.type, withdrawAccount) 
+        const depositResponse = this.createResponse(req.body.type, depositAccount) 
+        
+        return {
+            withdrawResponse,
+            depositResponse
+        }
     }
 
     private createResponse(type: TransactionType, account: Account) {
@@ -64,13 +88,5 @@ export default class EventController {
                 }  
             } 
     }
-
-    routes() {
-        this.router.post('/reset', (_req, res) => res.send(this.reset(res)))
-        this.router.get('/balance', (_req, res) => res.send(this.getBalanceById(_req, res)))
-        this.router.post('/event', (_req, res) => res.send(this.event(_req, res)))
-        return this.router
-    }
-
-    
+  
 }
