@@ -72,6 +72,46 @@ describe('Get Balance Tests', () => {
       .expect(200, '20');
   });
 
+  test('Withdraw from non-existing account', () => {
+    return request(app)
+      .post('/event')
+      .send({
+        type: 'withdraw', 
+        origin: '200', 
+        amount: 10
+      })
+      .expect(404, '0');
+  });
+
+  test('Withdraw from existing account', () => {
+    request(app)
+      .post('/event')
+      .send({
+        type: 'deposit', 
+        destination: '100', 
+        amount: 20
+      })
+      .expect(201, {
+        destination: {
+          id: '100', 
+          balance: 20
+        }
+    });
+    return request(app)
+      .post('/event')
+      .send({
+        type: 'withdraw', 
+        origin: '100', 
+        amount: 5
+      })
+      .expect(201, {
+        origin: {
+          id: '100', 
+          balance: 15
+        }
+    });
+  });
+
 })
 
 
