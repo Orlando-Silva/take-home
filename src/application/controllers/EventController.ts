@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express'
 import { injectable } from 'tsyringe'
+import TransactionEvent from '../../domain/models/TransactionEvent'
 import AccountService from '../../domain/services/AccountService'
 
 @injectable()
@@ -26,9 +27,31 @@ export default class EventController {
         }
     }
   
+    event(req: Request, res: Response) {
+        try {
+            const event: TransactionEvent = {
+                amount: req.body.amount,
+                type: req.body.type,
+                destination: req.body.destination
+            }
+        
+            const account = this.accountService.createTransaction(event.destination, event.amount)
+
+            return res.status(201).send({
+                destination:  {
+                    account
+                }
+            })
+
+        } catch(e) {
+            res.status(404).json(0)
+        }
+    }
+
     routes() {
         this.router.post('/reset', (_req, res) => res.send(this.reset(res)))
         this.router.get('/balance', (_req, res) => res.send(this.getBalanceById(_req, res)))
+        this.router.post('/event', (_req, res) => res.send(this.event(_req, res)))
         return this.router
     }
 
