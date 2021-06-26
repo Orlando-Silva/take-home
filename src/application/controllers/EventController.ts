@@ -38,8 +38,9 @@ export default class EventController {
             const account = this.accountService.createTransaction(event.destination, event.amount)
 
             return res.status(201).send({
-                destination:  {
-                    account
+                destination: {
+                    id: account.id,
+                    balance: account.balance
                 }
             })
 
