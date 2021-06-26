@@ -6,14 +6,6 @@ import AccountService from '../../../src/domain/services/AccountService'
 
 let accountService = container.resolve(AccountService)
 
-describe('Get Balance Tests', () => {
-
-    test('Get balance for non-existing account', () => {
-        expect(() => accountService.getBalanceById(1234)).toThrowError(NonExistingAccountException)
-    })
-
-})
-
 describe('Deposits Tests', () => {
 
     beforeEach(() => {
@@ -37,6 +29,20 @@ describe('Deposits Tests', () => {
 
         expect(actualResult).toStrictEqual(expectedResult)
     })
+})
+
+describe('Get Balance Tests', () => {
+
+    test('Get balance for non-existing account', () => {
+        expect(() => accountService.getBalanceById(1234)).toThrowError(NonExistingAccountException)
+    })
+
+    test('Get balance for existing account', () => {
+        accountService.createTransaction(1, 100)
+        const actualBalance = accountService.getBalanceById(1)
+        expect(actualBalance).toBe(100)
+    })
+
 })
 
 describe('Reset State Tests', () => {
